@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Issue (
+module Web.SpiraJira.Issue (
   Issue(..),
   TicketId(..),
   issueDescription,
@@ -11,7 +11,7 @@ import Data.Time.Clock (UTCTime)
 import Data.Time.Format
 import Control.Monad
 import Control.Applicative
-import Data.Text
+import Data.Text (Text (..), unpack, pack)
 import qualified Data.ByteString.Lazy as LBS
 import System.Locale (defaultTimeLocale)
 
@@ -19,7 +19,10 @@ newtype TicketId = TicketId Text deriving (Eq)
 instance Show TicketId where
   show (TicketId key) = unpack key
 
-newtype JiraTime = JiraTime {utc :: UTCTime} deriving (Eq, Show)
+newtype JiraTime = JiraTime {utc :: UTCTime} deriving (Eq)
+instance Show JiraTime where
+  show (JiraTime utc) = show utc
+                        
 jiraFormat :: String
 jiraFormat = "%FT%T%Q%z"
 
@@ -31,7 +34,12 @@ instance FromJSON JiraTime where
 data Fields = Fields {
   summary     :: Text,
   description :: Text
-  } deriving (Eq, Show)
+  } deriving (Eq)
+
+instance Show Fields where
+  show (Fields summary description) =
+    (unpack summary) ++ "\n\n" ++
+    (unpack description) ++ "\n"
 
 data Author = Author {
   name :: Text,
@@ -44,13 +52,26 @@ data Comment = Comment {
   author  :: Author,
   updated :: JiraTime,
   created :: JiraTime
-  } deriving (Eq, Show)
+  } deriving (Eq)
+
+instance Show Comment where
+  show (Comment body author updated _) =
+    (unpack $ displayName author) ++
+    " (" ++ (show updated) ++ ")\n" ++
+    (unpack body) ++ "\n"
 
 data Issue = Issue {
   key      :: TicketId,
   fields   :: Fields,
   comments :: [Comment]
-  } deriving (Eq, Show)
+  } deriving (Eq)
+
+instance Show Issue where
+  show (Issue key fields comments) =
+    show key    ++ " :: " ++
+    show fields ++
+    "\n\nCOMMENTS:\n\n" ++
+    unlines (map show comments)  ++ "\n"
 
 issueDescription :: Issue -> Text
 issueDescription issue = description $ fields issue

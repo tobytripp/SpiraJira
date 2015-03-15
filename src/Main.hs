@@ -6,7 +6,7 @@ import Control.Applicative
 import Control.Exception
 import Data.Configurator.Types (Config, Name)
 import Data.Maybe
-import Data.Text (unpack)
+import Data.Text (unpack, pack)
 import Network.HTTP.Conduit
 import Options
 import qualified Data.ByteString.Char8 as BS
@@ -14,7 +14,7 @@ import qualified Data.ByteString.Lazy as LBS
 import qualified Data.Configurator as Config
 import qualified Network.Connection as Conn
 
-import Issue
+import Web.SpiraJira.Issue
 
 -- # pp conn.get( "/rest/api/2/issue/IB-6292" ).body
 -- # pp conn.get( "/rest/api/2/issue/IB-6292/comment" ).body
@@ -27,12 +27,15 @@ import Issue
 data JiraConfig = JiraConfig {
   username :: BS.ByteString,
   password :: BS.ByteString,
-  uri  :: String
+  uri      :: String
   } deriving (Eq, Show)
 
 parseConfig :: FilePath -> IO JiraConfig
 parseConfig path = do
-  c <- Config.load [Config.Required path]
+  c <- Config.load [
+    Config.Optional "$(HOME)/.spirajira",
+    Config.Optional "../spirajira.cfg",
+    Config.Optional path]
   u <- Config.lookupDefault "Missing User"     c "user"
   p <- Config.lookupDefault "Missing Password" c "pass"
   l <- Config.lookupDefault "Missing URI"      c "uri"
@@ -57,26 +60,31 @@ https :: Manager -> JiraConfig -> String -> IO LBS.ByteString
 https manager jira url = fmap responseBody $ httpLbs (req jira url) manager
 
 issue :: JiraConfig -> TicketId -> IO (Either String Issue)
-issue jira key = do
+issue jira id = do
   manager <- nonVerifyingManager
-  body    <- https manager jira $ issueUrl (uri jira) key
+  body    <- https manager jira $ issueUrl (uri jira) id
   return $ decodeIssue body
+
+showIssue :: JiraConfig -> TicketId -> IO ()
+showIssue j tid = do
+  d <- issue j tid
+  case d of
+   Left  err -> putStrLn err
+   Right i   -> putStrLn $ show i
+
 
 data MainOptions = MainOptions {
   configPath :: String}
 
 instance Options MainOptions where
   defineOptions = pure MainOptions
-    <*> simpleOption "config" "../spirajira.cfg" "Configuration path."
+    <*> simpleOption "config" "spirajira.cfg" "Configuration path."
 
 main :: IO ()
-main = runCommand $ \options args -> do
-  putStrLn $ configPath options
-  putStrLn $ show args
-
+main = runCommand $ \ options args -> do
   j <- parseConfig (configPath options)
-  d <- issue j (TicketId "IB-6292")
-  case d of
-   Left  err -> putStrLn err
-   Right i   -> putStrLn $ show $ comments i
-  putStrLn "done!"
+  case args of
+    [] -> putStrLn "Please provide a ticket ID"
+    (tid : []) -> showIssue j (TicketId $ pack tid)
+    ("comment":tid:rest) -> putStrLn $ show rest
+    _  -> putStrLn "Option not recognized"
