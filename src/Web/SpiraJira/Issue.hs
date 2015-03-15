@@ -1,13 +1,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Web.SpiraJira.Issue (
   Issue(..),
+  Comment(..),
   TicketId(..),
   issueDescription,
-  decodeIssue
+  decodeIssue,
+  commentJson
   ) where
 
-import Data.Aeson(Value(..), (.:), FromJSON(..), eitherDecode)
-import Data.Time.Clock (UTCTime)
+import Data.Aeson(Value(..), (.:), (.=), FromJSON(..), ToJSON(..), eitherDecode, encode, object)
+import Data.Maybe
+import Data.Time.Clock (UTCTime, getCurrentTime)
 import Data.Time.Format
 import Control.Monad
 import Control.Applicative
@@ -22,9 +25,11 @@ instance Show TicketId where
 newtype JiraTime = JiraTime {utc :: UTCTime} deriving (Eq)
 instance Show JiraTime where
   show (JiraTime utc) = show utc
-                        
+
 jiraFormat :: String
 jiraFormat = "%FT%T%Q%z"
+
+empty_time = JiraTime $ fromJust $ parseTime defaultTimeLocale "%FT%T" "1970-01-01T00:00:00"
 
 instance FromJSON JiraTime where
   parseJSON (String s) = maybe mzero (return . JiraTime) $
@@ -46,6 +51,7 @@ data Author = Author {
   displayName :: Text,
   email :: Text
   } deriving (Eq, Show)
+empty_author = Author "" "" ""
 
 data Comment = Comment {
   body    :: Text,
@@ -76,6 +82,9 @@ instance Show Issue where
 issueDescription :: Issue -> Text
 issueDescription issue = description $ fields issue
 
+commentJson :: String -> LBS.ByteString
+commentJson body = encode $ Comment (pack body) empty_author empty_time empty_time
+
 instance FromJSON Fields where
   parseJSON (Object v) =
     Fields <$> v .: "summary"
@@ -88,6 +97,9 @@ instance FromJSON Author where
            <*> v .: "displayName"
            <*> v .: "emailAddress"
   parseJSON _ = mzero
+
+instance ToJSON Comment where
+  toJSON (Comment body _ _ _) = object ["body" .= body]
 
 instance FromJSON Comment where
   parseJSON (Object v) = do

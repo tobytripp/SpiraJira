@@ -16,7 +16,13 @@ version:             0.1.0.0
 synopsis:            Crude command-line client to Jira
 
 -- A longer description of the package.
--- description:
+description:
+  Spirogyra is very common in relatively clean eutrophic water,
+  developing slimy filamentous green masses. In spring Spirogyra grows
+  under water, but when there is enough sunlight and warmth they
+  produce large amounts of oxygen, adhering as bubbles between the
+  tangled filaments. The filamentous masses come to the surface and
+  become visible as slimy green mats.  (Wikipedia)
 
 -- URL for the project homepage or repository.
 homepage:            https://github.com/tobytripp/sj
@@ -62,7 +68,7 @@ executable spirajira
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
-  build-depends:       base         >=4.7 && < 4.8,
+  build-depends:       base         >= 4.7 && < 4.8,
                        aeson        >= 0.6 && < 0.7,
                        bytestring   >= 0.10,
                        conduit      >= 1.0,
@@ -74,7 +80,8 @@ executable spirajira
                        old-locale   >= 1.0 && < 2,
                        options      >= 1.2 && < 2,
                        text         >= 1.2 && < 2,
-                       time         >= 1.4 && < 2
+                       time         >= 1.4 && < 2,
+                       transformers >= 0.4.2 && < 0.5
 
   -- Directories containing source files.
   hs-source-dirs:      src
