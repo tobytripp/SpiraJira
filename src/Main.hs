@@ -4,14 +4,15 @@ module Main where
 
 import Control.Applicative
 import Control.Exception
-import Network.HTTP.Conduit
-import qualified Network.Connection as Conn
-import qualified Data.ByteString.Char8 as BS
-import qualified Data.ByteString.Lazy as LBS
+import Data.Configurator.Types (Config, Name)
 import Data.Maybe
 import Data.Text (unpack)
+import Network.HTTP.Conduit
+import Options
+import qualified Data.ByteString.Char8 as BS
+import qualified Data.ByteString.Lazy as LBS
 import qualified Data.Configurator as Config
-import Data.Configurator.Types (Config, Name)
+import qualified Network.Connection as Conn
 
 import Issue
 
@@ -61,9 +62,19 @@ issue jira key = do
   body    <- https manager jira $ issueUrl (uri jira) key
   return $ decodeIssue body
 
+data MainOptions = MainOptions {
+  configPath :: String}
+
+instance Options MainOptions where
+  defineOptions = pure MainOptions
+    <*> simpleOption "config" "../spirajira.cfg" "Configuration path."
+
 main :: IO ()
-main = do
-  j <- parseConfig "../spirajira.cfg"
+main = runCommand $ \options args -> do
+  putStrLn $ configPath options
+  putStrLn $ show args
+
+  j <- parseConfig (configPath options)
   d <- issue j (TicketId "IB-6292")
   case d of
    Left  err -> putStrLn err
