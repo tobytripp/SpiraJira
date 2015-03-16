@@ -1,7 +1,16 @@
 * SpiraJira: Cut Through the Scum
 
-A crude command-line client for Jira.  If you have to use it, at least
-you won't have to touch it.
+  #+BEGIN_QUOTE
+  Spirogyra is very common in relatively clean eutrophic water,
+  developing slimy filamentous green masses. In spring Spirogyra grows
+  under water, but when there is enough sunlight and warmth they
+  produce large amounts of oxygen, adhering as bubbles between the
+  tangled filaments. The filamentous masses come to the surface and
+  become visible as slimy green mats.  (Wikipedia)
+  #+END_QUOTE
+
+  A crude command-line client for Jira.  If you have to use it, at
+least you won't have to touch it.
 
 * Commands
 
