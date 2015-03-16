@@ -57,3 +57,22 @@ you won't have to touch it.
 * Installation
 
   Hold on.  Let's make sure it works first.
+
+* Configuration
+
+  SpiraJira reads login credentials and Server URI from a configuration file.
+
+  By default, it will read files in this order:
+    1. $(HOME)/.spirajira
+    2. ./spirajira.cfg
+    3. a file specified with the =--config= option
+
+  The configuration file should look something like this:
+
+  #+BEGIN_SRC conf
+    user = "ticketdrone557"
+    pass = "comply!"
+    uri  = "https://jira.host/rest/api/2/"
+  #+END_SRC
+
+

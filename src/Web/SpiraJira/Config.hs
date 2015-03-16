@@ -20,6 +20,7 @@ parseConfig path = do
   c <- Config.load [
     Config.Optional "$(HOME)/.spirajira",
     Config.Optional "../spirajira.cfg",
+    Config.Optional "spirajira.cfg",
     Config.Optional path]
   u <- Config.lookupDefault "Missing User"     c "user"
   p <- Config.lookupDefault "Missing Password" c "pass"
