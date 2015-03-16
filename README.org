@@ -22,19 +22,19 @@ least you won't have to touch it.
    spirajira TB-001
    #+END_SRC
 
-   #+BEGIN_QUOTE
-   TB-001 :: On the Many Problems Inherent in Mis-using Jira for Planning
-   [In Development]
+   #+BEGIN_SRC fundamental
+     TB-001 :: On the Many Problems Inherent in Mis-using Jira for Planning
+     [In Development]
 
-   This hurts.  Why do we keep doing this to ourselves?
+     This hurts.  Why do we keep doing this to ourselves?
 
-   COMMENTS:
+     COMMENTS:
 
-   Joe Dev (2015-02-27 00:02:23 UTC)
-   But I like doing it this way.  I never have to talk to anybody and
-   it's nearly impossible for anyone to find out how terrible I am at
-   my job.
-   #+END_QUOTE
+     Joe Dev (2015-02-27 00:02:23 UTC)
+     But I like doing it this way.  I never have to talk to anybody and
+     it's nearly impossible for anyone to find out how terrible I am at
+     my job.
+   #+END_SRC
 
 ** Comment on an Issue
 
@@ -50,12 +50,12 @@ least you won't have to touch it.
    spirajira actions TB-001
    #+END_SRC
 
-   #+BEGIN_QUOTE
+   #+BEGIN_SRC fundamental
    31 : Pause Development
    211 : Developed - Waiting for Product Review
    311 : In Development - Waiting for Product Info
    371 : Close
-   #+END_QUOTE
+   #+END_SRC
 
 ** Trigger a Transition
 
