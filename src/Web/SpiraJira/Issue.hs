@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Web.SpiraJira.Issue (
-  Issue(..),
-  Comment(..),
+  Issue,
+  Comment,
   TicketId(..),
   issueDescription,
   decodeIssue,
@@ -38,12 +38,14 @@ instance FromJSON JiraTime where
 
 data Fields = Fields {
   summary     :: Text,
-  description :: Text
+  description :: Text,
+  status      :: Text
   } deriving (Eq)
 
 instance Show Fields where
-  show (Fields summary description) =
-    (unpack summary) ++ "\n\n" ++
+  show (Fields summary description status) =
+    (unpack summary) ++ "\n" ++
+    "[" ++ (unpack status)  ++ "]\n\n" ++
     (unpack description) ++ "\n"
 
 data Author = Author {
@@ -89,6 +91,7 @@ instance FromJSON Fields where
   parseJSON (Object v) =
     Fields <$> v .: "summary"
            <*> v .: "description"
+           <*> ((v .: "status") >>= (.: "name"))
   parseJSON _ = mzero
 
 instance FromJSON Author where
