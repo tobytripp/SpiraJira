@@ -1,0 +1,59 @@
+* SpiraJira: Cut Through the Scum
+
+A crude command-line client for Jira.  If you have to use it, at least
+you won't have to touch it.
+
+* Commands
+
+** Show an Issue
+
+   Prints the Summary, Description, and Comments for the specified Ticket:
+
+   #+BEGIN_SRC sh
+   spirajira TB-001
+   #+END_SRC
+
+   #+BEGIN_QUOTE
+   TB-001 :: On the Many Problems Inherent in Mis-using Jira for Planning
+   [In Development]
+
+   This hurts.  Why do we keep doing this to ourselves?
+
+   COMMENTS:
+
+   Joe Dev (2015-02-27 00:02:23 UTC)
+   But I like doing it this way.  I never have to talk to anybody and
+   it's nearly impossible for anyone to find out how terrible I am at
+   my job.
+   #+END_QUOTE
+
+** Comment on an Issue
+
+   Add a comment to the specified ticket.
+
+   #+BEGIN_SRC sh
+   spirajira comment TB-002 "I sure wish we weren't trying to plan software with a ticketing tool"
+   #+END_SRC
+
+** Show Available Transitions
+
+   #+BEGIN_SRC sh
+   spirajira actions TB-001
+   #+END_SRC
+
+   #+BEGIN_QUOTE
+   31 : Pause Development
+   211 : Developed - Waiting for Product Review
+   311 : In Development - Waiting for Product Info
+   371 : Close
+   #+END_QUOTE
+
+** Trigger a Transition
+
+   #+BEGIN_SRC sh
+   spirajira act TB-001 371
+   #+END_SRC
+
+* Installation
+
+  Hold on.  Let's make sure it works first.

@@ -1,7 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-
 import Control.Applicative
 import Data.Text (pack)
 import Options
@@ -10,12 +9,6 @@ import Web.SpiraJira.Issue
 import Web.SpiraJira.Config
 import Web.SpiraJira.Connection
 import Web.SpiraJira.Transition
-
--- # pp conn.get( "/rest/api/2/issue/IB-6292" ).body
--- # pp conn.get( "/rest/api/2/issue/IB-6292/comment" ).body
--- # pp conn.post( "/rest/api/2/issue/IB-6292/comment", body: comment )
--- # pp conn.get( "/rest/api/2/issue/IB-6292/comment" ).body
--- puts conn.get( "/rest/api/2/issue/IB-6292/comment" ).body["comments"].last["body"]
 
 -- http GET -a ttripp:xZ\?3KEwGLt3ZXFit https://localhost:8080/rest/api/2/issue/IB-6292
 
