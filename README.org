@@ -66,8 +66,14 @@ least you won't have to touch it.
 * Installation
 
   Hold on.  Let's make sure it works first.
-  
-  If you really want to, there's a build of it for OS/X.
+
+  If you really want to try it, there's a build of it for [[https://github.com/tobytripp/SpiraJira/releases/tag/v0.1.0.0][OS/X]].
+  Otherwise, check it out and build it with [[https://www.haskell.org/cabal/][cabal]]:
+
+  #+BEGIN_SRC sh
+    cabal install --only-dependencies
+    cabal build
+  #+END_SRC
 
 * Configuration
 
