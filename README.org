@@ -19,7 +19,7 @@ least you won't have to touch it.
    Prints the Summary, Description, and Comments for the specified Ticket:
 
    #+BEGIN_SRC sh
-   spirajira TB-001
+   $ spirajira TB-001
    #+END_SRC
 
    #+BEGIN_SRC fundamental
@@ -41,13 +41,13 @@ least you won't have to touch it.
    Add a comment to the specified ticket.
 
    #+BEGIN_SRC sh
-   spirajira comment TB-002 "I sure wish we weren't trying to plan software with a ticketing tool"
+   $ spirajira comment TB-002 "I sure wish we weren't trying to plan software with a ticketing tool"
    #+END_SRC
 
 ** Show Available Transitions
 
    #+BEGIN_SRC sh
-   spirajira actions TB-001
+   $ spirajira actions TB-001
    #+END_SRC
 
    #+BEGIN_SRC fundamental
@@ -60,12 +60,14 @@ least you won't have to touch it.
 ** Trigger a Transition
 
    #+BEGIN_SRC sh
-   spirajira act TB-001 371
+   $ spirajira act TB-001 371
    #+END_SRC
 
 * Installation
 
   Hold on.  Let's make sure it works first.
+  
+  If you really want to, there's a build of it for OS/X.
 
 * Configuration
 
