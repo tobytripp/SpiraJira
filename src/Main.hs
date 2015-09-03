@@ -10,8 +10,6 @@ import Web.SpiraJira.Config
 import Web.SpiraJira.Connection
 import Web.SpiraJira.Transition
 
--- http GET -a ttripp:xZ\?3KEwGLt3ZXFit https://localhost:8080/rest/api/2/issue/IB-6292
-
 issueUrl :: String -> TicketId -> String
 issueUrl baseUrl key = baseUrl ++ "issue/" ++ (show key)
 
